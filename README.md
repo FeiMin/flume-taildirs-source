@@ -1,8 +1,10 @@
 # flume-taildirs-source
 基于 flume 1.7 taildir source 更新优化，同时保持 1.7 版本兼容性。
+加入一些源码阅读的注释。
 
 ## 应用场景
-某些场景下，例如采集 java 输入日志，需要将异常栈（如下所示）读取为一行。
+某些场景下，例如采集用 flume 采集 java 输入日志，需要将异常栈（如下所示）读取为一行。
+这样前端展示（例如 ELK 平台）可以看到完整的栈信息，异常栈不会出现乱序的问题。
 
 ```
 [DEBUG] [2017-01-19 11:33:41][org.apache.hadoop.util.NativeCodeLoader]Trying to load the custom-built native-hadoop library...
@@ -30,10 +32,12 @@ java.io.IOException: HADOOP_HOME or hadoop.home.dir are not set.
 
 ## how to use
 ### 部署
-`maven clean package`  将打出的 jar 包拷贝至 flume lib 目录下
+`mvn clean package`  将打出的 jar 包拷贝至 flume lib 目录下
 ### 配置
-在配置文件中新增配置`linePrefix`，配置行首开始的正则表达式，例如
-a1.sources.r1.linePrefix = \\[.*
-如果不需要将栈读取为一行 置为null或者空即可
+在配置文件中新增配置`linePrefix`，配置行首开始的正则表达式，例如：
+
+a1.sources.r1.linePrefix = \\\\[.* (以中括号开头）
+
+如果不需要将栈读取为一行 置为 null 或者空即可
 
 
